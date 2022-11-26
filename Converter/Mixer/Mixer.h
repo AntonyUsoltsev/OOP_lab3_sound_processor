@@ -5,7 +5,7 @@
 #ifndef LAB3_SOUND_PROCESSOR_MIXER_H
 #define LAB3_SOUND_PROCESSOR_MIXER_H
 
-#include "../Converter/Converter.h"
+#include "../Converter.h"
 
 class Mixer : public Converter{
 public:

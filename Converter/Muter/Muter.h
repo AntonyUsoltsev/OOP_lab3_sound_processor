@@ -4,10 +4,12 @@
 
 #ifndef LAB3_SOUND_PROCESSOR_MUTER_H
 #define LAB3_SOUND_PROCESSOR_MUTER_H
-#include "../Converter/Converter.h"
+#include "../Converter.h"
 
 class Muter : public Converter{
 public:
-    int mute();
+    int action(){
+
+    }
 };
 #endif //LAB3_SOUND_PROCESSOR_MUTER_H
