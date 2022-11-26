@@ -1,0 +1,8 @@
+//
+// Created by Antony on 26.11.2022.
+//
+
+#ifndef LAB3_SOUND_PROCESSOR_CONFIG_H
+#define LAB3_SOUND_PROCESSOR_CONFIG_H
+
+#endif //LAB3_SOUND_PROCESSOR_CONFIG_H

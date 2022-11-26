@@ -1,6 +1,11 @@
 #include <iostream>
+#include "boost/program_options.hpp"
+#include "WAV/WAV.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    FILE *fin = fopen("..//_Sound Processor Example Music/funkorama.wav", "rb");
+    WAV wav;
+
+    FILE *fout = fopen("result.wav", "wb");
+    wav.record_wav(fout);
 }
