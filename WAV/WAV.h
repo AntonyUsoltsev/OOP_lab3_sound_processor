@@ -6,9 +6,11 @@
 #define LAB3_SOUND_PROCESSOR_WAV_H
 
 #include <iostream>
-#include <stdio.h>
+//#include <stdio.h>
 #include <vector>
 #include <windows.h>
+
+#include "..//Exceptions/Exceptions.h"
 
 //subchank1 -- format
 //subchunk2 -- data
@@ -35,15 +37,20 @@ typedef struct WAV_chunk_struct {
 
 class WAV {
 public:
+    std::string file_name;
     WAV_header wav_header;
     WAV_chunk wav_chunk;
     int sample_size;
     int samples_count;
     unsigned long *data;
 
-    void read_wav(FILE *fin);
+    explicit WAV(std::string f_name) : file_name(std::move(f_name)) {}
 
-    void record_wav(FILE *fout);
+    void read_wav();
+
+    void check_rightness() const;
+
+    void record_wav(const std::string& file_out_name);
 
 };
 

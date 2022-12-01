@@ -8,8 +8,8 @@
 
 class Muter : public Converter{
 public:
-    int action(){
-
-    }
+//    int action(){
+//
+//    }
 };
 #endif //LAB3_SOUND_PROCESSOR_MUTER_H

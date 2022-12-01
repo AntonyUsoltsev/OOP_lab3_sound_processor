@@ -1,19 +1,28 @@
 #include <iostream>
-#include "boost/program_options.hpp"
+#include "Prog_args/Prog_args.h"
 #include "WAV/WAV.h"
 #include "Sound_processor/Sound_processor.h"
+#include "Exceptions/Exceptions.h"
 
-int main() {
-    WAV wav;
-    FILE *fin = fopen("..//_Music Example/funkorama.wav", "rb");
-    wav.read_wav(fin);
-    fclose(fin);
+int main(int argc, char **argv) {
+    try {
 
-    Config config;
+        WAV wav("..//_Music Example/funkorama.wav");
+        wav.read_wav();
 
-    Sound_processor sound_proc(wav,config);
+        Config config("..//Config/Config.txt");
+        std::vector<Action> instructions = config.read_config();
 
-    FILE *fout = fopen("result.wav", "wb");
-    wav.record_wav(fout);
-    fclose(fout);
+        for(auto i:instructions) {
+            std::cout << i.convert_type <<" "<<i.frst_arg<<" "<<i.sec_arg<<'\n';
+
+        }
+        Sound_processor sound_proc(wav, instructions);
+
+        wav.record_wav("result.wav");
+
+    }
+    catch (Exceptions &ex) {
+        std::cerr << ex.what();
+    }
 }
