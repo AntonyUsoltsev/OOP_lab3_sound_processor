@@ -6,23 +6,25 @@
 
 int main(int argc, char **argv) {
     try {
+          Prog_args prog_args(argc,argv);
 
-        WAV wav("..//_Music Example/funkorama.wav");
+        WAV wav(prog_args.files[0]);
         wav.read_wav();
 
-        Config config("..//Config/Config.txt");
-        std::vector<Action> instructions = config.read_config();
-
+       Config config(prog_args.config);
+       std::vector<Action> instructions = config.read_config();
+        std::cout << "\nInstructions:\n";
         for(auto i:instructions) {
-            std::cout << i.convert_type <<" "<<i.frst_arg<<" "<<i.sec_arg<<'\n';
-
+          std::cout << i.convert_type <<" "<<i.frst_arg<<" "<<i.sec_arg<<'\n';
         }
-        Sound_processor sound_proc(wav, instructions);
 
-        wav.record_wav("result.wav");
+//        Sound_processor sound_proc(wav, instructions);
+//
+       wav.record_wav(prog_args.output);
 
     }
     catch (Exceptions &ex) {
         std::cerr << ex.what();
+        return 1;
     }
 }
