@@ -4,12 +4,16 @@
 
 #ifndef LAB3_SOUND_PROCESSOR_CONVERTER_H
 #define LAB3_SOUND_PROCESSOR_CONVERTER_H
+
+#include "..//WAV/WAV.h"
+
 class Converter{
 public:
     Converter()=default;
 
+    virtual void action(WAV, std::vector<std::string>) = 0;
+
     virtual ~Converter() = default;
 
-    virtual int action() = 0;
 };
 #endif //LAB3_SOUND_PROCESSOR_CONVERTER_H

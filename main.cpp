@@ -6,21 +6,21 @@
 
 int main(int argc, char **argv) {
     try {
-          Prog_args prog_args(argc,argv);
+        Prog_args prog_args(argc, argv);
 
         WAV wav(prog_args.files[0]);
         wav.read_wav();
 
-       Config config(prog_args.config);
-       std::vector<Action> instructions = config.read_config();
+        Config config(prog_args.config);
+        std::vector<Action> instructions = config.read_config();
         std::cout << "\nInstructions:\n";
-        for(auto i:instructions) {
-          std::cout << i.convert_type <<" "<<i.frst_arg<<" "<<i.sec_arg<<'\n';
+        for (auto i: instructions) {
+            std::cout << i.convert_type << " " << i.frst_arg << " " << i.sec_arg << '\n';
         }
 
-//        Sound_processor sound_proc(wav, instructions);
-//
-       wav.record_wav(prog_args.output);
+        Sound_processor sound_proc(wav, instructions,prog_args.files);
+
+        wav.record_wav(prog_args.output);
 
     }
     catch (Exceptions &ex) {

@@ -33,7 +33,7 @@ Prog_args::Prog_args(int argc, char **argv) {
     }
     if (vm.count("files")) {
         for (int i = 0; i < files.size(); i++)
-            std::cout << "file " << i+1 << ":" << vm["files"].as<std::vector<std::string>>()[i] << std::endl;
+            std::cout << "file " << i + 1 << ":" << vm["files"].as<std::vector<std::string>>()[i] << std::endl;
     }
 
 }

@@ -7,14 +7,14 @@
 
 #include <map>
 
-template <class ID, class Base> class Converters_Factory {
+template <class ID, class Base,class param1,class param2> class Converters_Factory {
 private:
-    typedef Base *(*fInstantiator)();
+    typedef Base *(*fInstantiator)(param1,param2);
 
     std::map<ID, fInstantiator> classes;
 
-    template <class Derived> static Base *instantiator() {
-        return new Derived();
+    template <class Derived> static Base *instantiator(param1 p1,param2 p2) {
+        return new Derived(p1,p2);
     }
 
 public:
