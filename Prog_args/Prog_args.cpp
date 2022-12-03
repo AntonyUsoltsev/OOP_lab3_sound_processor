@@ -1,7 +1,6 @@
 //
 // Created by Antony on 01.12.2022.
 //
-//sound_processor [-h] [-c config.txt output.wav input1.wav [input2.wav …]]
 
 #include "Prog_args.h"
 
@@ -32,7 +31,7 @@ Prog_args::Prog_args(int argc, char **argv) {
     else{
         HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED);
-        std::cout<<"\nTO GET MANUAL INSERT --help KEY IN COMMAND LINE\n";
+        std::cout<<"\nTO GET MANUAL INSERT --help KEY IN PROGRAM ARGUMENTS\n";
         SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED);
 
     }

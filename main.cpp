@@ -4,7 +4,6 @@
 #include "Sound_processor/Sound_processor.h"
 #include "Exceptions/Exceptions.h"
 
-
 int main(int argc, char **argv) {
     try {
 
@@ -27,7 +26,7 @@ int main(int argc, char **argv) {
     }
     catch (Exceptions &ex) {
         std::cout.flush();
-        std::cerr << "\nERROR: "<<ex.what();
+        std::cerr << "\nERROR: " << ex.what();
         return 1;
     }
 }
