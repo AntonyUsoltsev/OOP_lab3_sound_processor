@@ -37,12 +37,12 @@ typedef struct WAV_chunk_struct {
 
 class WAV {
 public:
-    std::string file_name;
-    WAV_header wav_header;
-    WAV_chunk wav_chunk;
-    int sample_size;
-    int samples_count;
-    unsigned long *data;
+    std::string file_name; // Путь до wav файла который будет реализован в этом классе
+    WAV_header wav_header; // Wav заголовок
+    WAV_chunk wav_chunk;   // Chunk с data
+    int sample_size;  //Размер сэмла
+    unsigned long samples_count; // Количество сэмплов в области данных
+    unsigned long *data; //Массив данных
 
     explicit WAV(std::string f_name) : file_name(std::move(f_name)) {}
 

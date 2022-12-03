@@ -22,7 +22,7 @@ void WAV::read_wav() {
     while (true) { //go to data chunk
         fread(&wav_chunk, sizeof(wav_chunk), 1, fin);
         // printf("%c%c%c%c\t" "%li\n", wav_chunk.id[0], wav_chunk.id[1], chunk.id[2], chunk.id[3], chunk.size);
-        if (*(unsigned long *) &wav_chunk.subchunkId == 0x61746164)
+        if (*(unsigned long *) &wav_chunk.subchunkId == 0x61746164) //data
             break;
         fseek(fin, wav_chunk.subchunkSize, SEEK_CUR); //skip chunk data bytes
     }

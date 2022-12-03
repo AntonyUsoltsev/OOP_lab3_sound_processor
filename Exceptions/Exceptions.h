@@ -11,6 +11,7 @@ class Exceptions: std::exception{
 
     public:
     explicit Exceptions(std::string res):reason(std::move(res)){}
+
     std::string what(){
         return this->reason;
     }

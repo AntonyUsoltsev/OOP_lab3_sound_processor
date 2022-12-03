@@ -6,7 +6,7 @@
 #include "Prog_args.h"
 
 Prog_args::Prog_args(int argc, char **argv) {
-    po::options_description desc("Description");
+    po::options_description desc("");
     desc.add_options()
             ("help", "help")
             ("config", po::value<std::string>(&config), "--config=path to config file")
@@ -21,19 +21,41 @@ Prog_args::Prog_args(int argc, char **argv) {
         throw Exceptions(e.what());
     }
     if (vm.count("help")) {
-        std::cout << desc << std::endl;
+        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
+        std::cout <<"\nCommand Line Info:\n";
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED);
+        std::cout<< desc << std::endl;
+        Manual::get_manual();
+
     }
-    if (vm.count("config")) {
-        std::cout << "config:"
-                  << vm["config"].as<std::string>() << std::endl;
+    else{
+        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_RED);
+        std::cout<<"\nTO GET MANUAL INSERT --help KEY IN COMMAND LINE\n";
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED);
+
     }
-    if (vm.count("output")) {
-        std::cout << "output:"
-                  << vm["output"].as<std::string>() << std::endl;
+//    if (vm.count("config")) {
+//        std::cout << "config:"
+//                  << vm["config"].as<std::string>() << std::endl;
+//    }
+    if(!vm.count("config")){
+       throw Exceptions("Missing config txt file in program arguments");
     }
-    if (vm.count("files")) {
-        for (int i = 0; i < files.size(); i++)
-            std::cout << "file " << i + 1 << ":" << vm["files"].as<std::vector<std::string>>()[i] << std::endl;
+//    if (vm.count("output")) {
+//        std::cout << "output:"
+//                  << vm["output"].as<std::string>() << std::endl;
+//    }
+    if(!vm.count("output")){
+        throw Exceptions("Missing output wav file in program arguments");
+    }
+//    if (vm.count("files")) {
+//        for (int i = 0; i < files.size(); i++)
+//            std::cout << "file " << i + 1 << ":" << vm["files"].as<std::vector<std::string>>()[i] << std::endl;
+//    }
+    if (!vm.count("files")){
+        throw Exceptions("Missing input wav file in program arguments");
     }
 
 }

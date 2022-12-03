@@ -4,8 +4,10 @@
 #include "Sound_processor/Sound_processor.h"
 #include "Exceptions/Exceptions.h"
 
+
 int main(int argc, char **argv) {
     try {
+
         Prog_args prog_args(argc, argv);
 
         WAV wav(prog_args.files[0]);
@@ -14,17 +16,18 @@ int main(int argc, char **argv) {
         Config config(prog_args.config);
         std::vector<Action> instructions = config.read_config();
         std::cout << "\nInstructions:\n";
-        for (auto i: instructions) {
+        for (const auto &i: instructions) {
             std::cout << i.convert_type << " " << i.frst_arg << " " << i.sec_arg << '\n';
         }
 
-        Sound_processor sound_proc(wav, instructions,prog_args.files);
+        Sound_processor sound_proc(wav, instructions, prog_args.files);
 
         wav.record_wav(prog_args.output);
 
     }
     catch (Exceptions &ex) {
-        std::cerr << ex.what();
+        std::cout.flush();
+        std::cerr << "\nERROR: "<<ex.what();
         return 1;
     }
 }

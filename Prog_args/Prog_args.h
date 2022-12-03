@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "..//Exceptions/Exceptions.h"
+#include "..//Manual/Manual.h"
 
 //sound_processor [-h] [-c config.txt output.wav input1.wav [input2.wav …]]
 namespace po = boost::program_options;

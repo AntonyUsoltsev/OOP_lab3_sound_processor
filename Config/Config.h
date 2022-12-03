@@ -37,10 +37,10 @@ public:
             Action act2;
             sscanf(line.c_str(), "%s", act.convert_type.c_str());
 
-            if (!strcmp(act.convert_type.c_str(), "mute") && !strcmp(act.convert_type.c_str(), "mix")) {
+            if (!strcmp(act.convert_type.c_str(), "mute") && !strcmp(act.convert_type.c_str(), "mix")&& !strcmp(act.convert_type.c_str(), "slow")) {
                 throw Exceptions("Wrong type of conversion");
             }
-            if (strcmp(act.convert_type.c_str(), "mute") == 0)
+            if (strcmp(act.convert_type.c_str(), "mute") == 0 || strcmp(act.convert_type.c_str(), "slow") == 0 )
                 if (sscanf(line.c_str(), "%s %d %d", act.convert_type.c_str(), &act.frst_arg, &act.sec_arg) != 3) {
                     throw Exceptions("Too few args in file");
                 }
