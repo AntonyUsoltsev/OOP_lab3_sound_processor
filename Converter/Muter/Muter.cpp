@@ -11,7 +11,7 @@ void Muter::get_description() {
     std::cout << "\nMute converter (Muter):\n";
     SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
-    std::cout << "  Config options: mute time_1 time_2;\n"
+    std::cout << "  Config options: mute time_1 time_2; 0 <= time_1 < time_2\n"
                  "\ttime_1 (int) - begin time (seconds from begin),\n"
                  "\ttime_2 (int) - end time (seconds from begin)\n"
                  "  Description: mute the input audio from time_1 to time_2, the rest - as in the input stream"

@@ -10,7 +10,7 @@ void Slow::get_description() {
     SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_BLUE);
     std::cout << "\nSlow converter (Slower):\n";
     SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-    std::cout << "  Config options: slow time_1 time_2; time_1 < time_2\n"
+    std::cout << "  Config options: slow time_1 time_2; 0 <= time_1 < time_2\n"
                  "\ttime_1 (int) - begin time (seconds from begin),\n"
                  "\ttime_2 (int) - end time (seconds from begin)\n"
                  "  Description: Slows down the audio in the input stream from time_1 to time_2 by half\n"
