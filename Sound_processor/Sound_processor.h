@@ -21,9 +21,18 @@ public :
 
     Sound_processor(WAV &wav, const std::vector<Action>& instructions, const std::vector<std::string>& files) {
         create_converters(instructions, files);
+        int con_count = instructions.size();
+        int cur = 1;
+        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
         for (auto cl: conv_list) {
+            std::cout << "Converting "<<cur* 100/ con_count <<"%\n";
+            //std::cout << "=";
             cl->action(wav);
+            cur++;
         }
+        std::cout << "Converting done!\n";
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
         make_null();
     }
 

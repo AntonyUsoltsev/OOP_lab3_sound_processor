@@ -13,12 +13,12 @@ int main(int argc, char **argv) {
         Config config(prog_args.config);
         std::vector<Action> instructions = config.read_config();
 
-        std::cout << "\nInstructions:\n";
-        for (const auto &i: instructions) {
-            std::cout << i.convert_type << " " << i.frst_arg << " " << i.sec_arg << '\n';
-        }
+//        std::cout << "\nInstructions:\n";
+//        for (const auto &i: instructions) {
+//            std::cout << i.convert_type << " " << i.frst_arg << " " << i.sec_arg << '\n';
+//        }
 
-        WAV wav(prog_args.files[0]);
+        WAV wav(prog_args.files[0],1);
         wav.read_wav();
 
         Sound_processor sound_proc(wav, instructions, prog_args.files);

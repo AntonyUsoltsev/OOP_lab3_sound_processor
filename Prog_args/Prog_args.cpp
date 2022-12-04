@@ -31,6 +31,15 @@ Prog_args::Prog_args(int argc, char **argv) {
         SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
         std::cout << desc << std::endl;
         Manual::get_manual();
+        std::string confirm;
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
+        std::cout << "\nTo continue press any key, to stop insert stop\n";
+        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+        std::cin>>confirm;
+        fflush(stdin);
+        if (!(strcmp(confirm.c_str(),"stop") && strcmp(confirm.c_str(),"STOP"))){
+            throw Exceptions("Program stopped");
+        }
 
     } else {
         HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);

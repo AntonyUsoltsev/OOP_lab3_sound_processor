@@ -42,4 +42,3 @@ void Muter::action(WAV &wav) {
     }
     fclose(data_file);
 }
-

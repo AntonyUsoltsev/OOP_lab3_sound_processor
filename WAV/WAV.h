@@ -47,8 +47,12 @@ public:
     std::string data_file_name;  // Путь до файла с данными (без заголовка)
     //FILE *data_file;
 
-    explicit WAV(std::string f_name) : file_name(std::move(f_name)) {
-        data_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/WAV/data.txt";
+    explicit WAV(std::string f_name,int priority) : file_name(std::move(f_name)) {
+        if (priority == 1)
+            data_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/WAV/data.txt";
+        else
+            data_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/WAV/extra_data.txt";
+
     }
 
     void read_wav();

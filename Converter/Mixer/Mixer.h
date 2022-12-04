@@ -13,7 +13,7 @@ class Mixer : public Converter {
 private:
     std::string extra_aud_file;
     int ins_time;
-    std::string mix_file_name;
+    //std::string mix_file_name;
 public:
     explicit Mixer() = default;
 
