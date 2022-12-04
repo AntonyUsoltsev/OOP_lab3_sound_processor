@@ -19,9 +19,9 @@ void Muter::get_description() {
 }
 
 void Muter::action(WAV &wav) {
-    if (time2 * wav.wav_header.sampleRate> wav.samples_count){
+    if (time2 * wav.wav_header.sampleRate > wav.samples_count)
         throw Exceptions("Invalid end time in mute converter");
-    }
+
     for (unsigned int i = time1 * wav.wav_header.sampleRate; i <= time2 * wav.wav_header.sampleRate; i++)
         wav.data[i] = 0;
 }

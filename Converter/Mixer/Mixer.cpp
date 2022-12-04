@@ -20,10 +20,18 @@ void Mixer::get_description() {
               << std::endl;
 }
 
+Mixer::Mixer(int par1, int par2, const std::vector<std::string> &files) {
+    if (files.size() >= par1) {
+        extra_aud_file = files[par1 - 1];
+        ins_time = par2;
+    } else
+        throw Exceptions("Too few program arguments: no second track");
+}
+
 void Mixer::action(WAV &wav) {
-    if (ins_time * wav.wav_header.sampleRate > wav.samples_count) {
+    if (ins_time * wav.wav_header.sampleRate > wav.samples_count)
         throw Exceptions("Invalid insertion time in mix converter");
-    }
+
     WAV wav_second(extra_aud_file);
     wav_second.read_wav();
     unsigned int i = ins_time * wav.wav_header.sampleRate;

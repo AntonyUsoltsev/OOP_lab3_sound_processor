@@ -7,6 +7,8 @@
 
 #include "../Converter.h"
 
+// Mute the input audio from time_1 to time_2, the rest - as in the input stream.
+
 class Muter : public Converter {
 private:
     int time1;

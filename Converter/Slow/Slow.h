@@ -7,6 +7,8 @@
 
 #include "../Converter.h"
 
+// Slows down the audio in the input stream from time_1 to time_2 by half.
+
 class Slow : public Converter {
 private:
     int time1;

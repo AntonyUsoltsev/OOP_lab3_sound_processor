@@ -7,6 +7,8 @@
 
 #include "../Converter.h"
 
+// Each sample is the average of the corresponding samples of the input streams.
+
 class Mixer : public Converter {
 private:
     std::string extra_aud_file;
@@ -14,13 +16,7 @@ private:
 public:
     explicit Mixer() = default;
 
-    explicit Mixer(int par1, int par2,const std::vector<std::string>& files) {
-        if (files.size() >= par1) {
-            extra_aud_file = files[par1 - 1];
-            ins_time = par2;
-        } else
-            throw Exceptions("Too few program arguments: no second track");
-    }
+    explicit Mixer(int par1, int par2,const std::vector<std::string>& files);
 
     void get_description() override ;
 

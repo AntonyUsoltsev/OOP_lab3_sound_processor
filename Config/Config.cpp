@@ -4,6 +4,8 @@
 
 #include "Config.h"
 
+// Include check type of conversion, count of converter parameters, 0 <= time1 < time2 and extra address > 1.
+
 std::vector<Action> Config::read_config() {
     std::ifstream fin(file_name);
     if (!fin.is_open())
@@ -48,6 +50,5 @@ std::vector<Action> Config::read_config() {
         instructions.push_back(act2);
         //instructions.push_back(act);
     }
-
     return instructions;
 }

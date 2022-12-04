@@ -19,9 +19,9 @@ void Slow::get_description() {
 }
 
 void Slow::action(WAV &wav) {
-    if (time2 * wav.wav_header.sampleRate > wav.samples_count) {
+    if (time2 * wav.wav_header.sampleRate > wav.samples_count)
         throw Exceptions("Invalid end time in slow converter");
-    }
+
     unsigned long k = wav.samples_count + (time2 - time1) * wav.wav_header.sampleRate * 1;
     auto *data2 = new unsigned long[k];
 

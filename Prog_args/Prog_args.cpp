@@ -4,6 +4,11 @@
 
 #include "Prog_args.h"
 
+/* Include check key rightness, the presence of the necessary keys (config, output, files[0] == input)
+ * and extension of arguments (config == .txt, output = .wav, files = .wav)
+ * Also shows the information of converters and information about command line arguments, if --help key has been insert.
+*/
+
 Prog_args::Prog_args(int argc, char **argv) {
     po::options_description desc("");
     desc.add_options()
