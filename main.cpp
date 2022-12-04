@@ -29,4 +29,9 @@ int main(int argc, char **argv) {
         std::cerr << "\nERROR: " << ex.what();
         return 1;
     }
+    catch(std::exception &ex){
+        std::cout.flush();
+        std::cerr << "\nERROR: " << ex.what();
+        return 2;
+    }
 }

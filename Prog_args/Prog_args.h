@@ -5,9 +5,11 @@
 #ifndef LAB3_SOUND_PROCESSOR_PROG_ARGS_H
 #define LAB3_SOUND_PROCESSOR_PROG_ARGS_H
 #include <iostream>
-#include "boost/program_options.hpp"
 #include <string>
 #include <vector>
+#include <utility>
+#include <cstring>
+#include "boost/program_options.hpp"
 #include "..//Exceptions/Exceptions.h"
 #include "..//Manual/Manual.h"
 
