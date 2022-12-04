@@ -9,16 +9,22 @@
 
 class Mixer : public Converter {
 private:
-    int param1;
-    int param2;
+    std::string extra_aud_file;
+    int ins_time;
 public:
     explicit Mixer() = default;
 
-    explicit Mixer(int par1, int par2) : param1(par1), param2(par2) {}
+    explicit Mixer(int par1, int par2,const std::vector<std::string>& files) {
+        if (files.size() >= par1) {
+            extra_aud_file = files[par1 - 1];
+            ins_time = par2;
+        } else
+            throw Exceptions("Too few program arguments: no second track");
+    }
 
     void get_description() override ;
 
-    void action(WAV &wav, std::vector<std::string> files) override;
+    void action(WAV &wav) override;
 };
 
 #endif //LAB3_SOUND_PROCESSOR_MIXER_H

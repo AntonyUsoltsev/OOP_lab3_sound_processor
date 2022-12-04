@@ -9,16 +9,16 @@
 
 class Slow : public Converter {
 private:
-    int param1;
-    int param2;
+    int time1;
+    int time2;
 public:
     explicit Slow() = default;
 
-    explicit Slow(int par1, int par2) : param1(par1), param2(par2) {}
+    explicit Slow(int par1, int par2,const std::vector<std::string>& files) : time1(par1), time2(par2) {}
 
     void get_description() override;
 
-    void action(WAV &wav, std::vector<std::string> files) override;
+    void action(WAV &wav) override;
 };
 
 

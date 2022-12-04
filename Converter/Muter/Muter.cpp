@@ -18,7 +18,10 @@ void Muter::get_description() {
               << std::endl;
 }
 
-void Muter::action(WAV &wav, std::vector<std::string> files) {
-    for (unsigned int i = param1 * wav.wav_header.sampleRate; i <= param2 * wav.wav_header.sampleRate; i++)
+void Muter::action(WAV &wav) {
+    if (time2 * wav.wav_header.sampleRate> wav.samples_count){
+        throw Exceptions("Invalid end time in mute converter");
+    }
+    for (unsigned int i = time1 * wav.wav_header.sampleRate; i <= time2 * wav.wav_header.sampleRate; i++)
         wav.data[i] = 0;
 }

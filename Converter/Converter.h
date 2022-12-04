@@ -16,7 +16,7 @@ public:
 
     virtual void get_description()=0;
 
-    virtual void action(WAV&, std::vector<std::string>) = 0;
+    virtual void action(WAV&) = 0;
 
     virtual ~Converter() = default;
 

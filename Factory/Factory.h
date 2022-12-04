@@ -7,20 +7,23 @@
 
 #include <map>
 
-template <class ID, class Base,class param1,class param2> class Converters_Factory {
+template<class ID, class Base, class param1, class param2, class param3>
+class Converters_Factory {
 private:
-    typedef Base *(*fInstantiator)(param1,param2);
+    typedef Base *(*fInstantiator)(param1, param2, param3);
 
     std::map<ID, fInstantiator> classes;
 
-    template <class Derived> static Base *instantiator(param1 p1,param2 p2) {
-        return new Derived(p1,p2);
+    template<class Derived>
+    static Base *instantiator(param1 p1, param2 p2, param3 p3) {
+        return new Derived(p1, p2, p3);
     }
 
 public:
     Converters_Factory() = default;
 
-    template <class Derived> void add(ID id) {
+    template<class Derived>
+    void add(ID id) {
         classes[id] = &instantiator<Derived>;
     }
 
