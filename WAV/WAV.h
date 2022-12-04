@@ -40,11 +40,16 @@ public:
     std::string file_name; // Путь до wav файла который будет реализован в этом классе
     WAV_header wav_header; // Wav заголовок
     WAV_chunk wav_chunk;   // Chunk с data
-    int sample_size;  //Размер сэмла
+    int sample_size;       // Размер сэмпла в байтах
     unsigned long samples_count; // Количество сэмплов в области данных
-    unsigned long *data; //Массив данных
+    unsigned long cnt_smpl_sec;
+    unsigned long *data;   // Массив данных
+    std::string data_file_name;  // Путь до файла с данными (без заголовка)
+    //FILE *data_file;
 
-    explicit WAV(std::string f_name) : file_name(std::move(f_name)) {}
+    explicit WAV(std::string f_name) : file_name(std::move(f_name)) {
+        data_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/WAV/data.txt";
+    }
 
     void read_wav();
 

@@ -3,8 +3,10 @@
 #include "WAV/WAV.h"
 #include "Sound_processor/Sound_processor.h"
 #include "Exceptions/Exceptions.h"
+#include <ctime>
 
 int main(int argc, char **argv) {
+    clock_t clock = std::clock();
     try {
         Prog_args prog_args(argc, argv);
 
@@ -22,6 +24,10 @@ int main(int argc, char **argv) {
         Sound_processor sound_proc(wav, instructions, prog_args.files);
 
         wav.record_wav(prog_args.output);
+
+        clock_t clock2 = std::clock();
+        std::cout<<clock2-clock;
+        return 0;
 
     }
     catch (Exceptions &ex) {

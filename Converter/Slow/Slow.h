@@ -13,10 +13,13 @@ class Slow : public Converter {
 private:
     int time1;
     int time2;
+    std::string slow_file_name;
 public:
     explicit Slow() = default;
 
-    explicit Slow(int par1, int par2,const std::vector<std::string>& files) : time1(par1), time2(par2) {}
+    explicit Slow(int par1, int par2,const std::vector<std::string>& files) : time1(par1), time2(par2) {
+       slow_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/Converter/Slow/slow.txt";
+    }
 
     void get_description() override;
 

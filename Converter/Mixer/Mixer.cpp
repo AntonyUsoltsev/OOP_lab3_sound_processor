@@ -24,6 +24,7 @@ Mixer::Mixer(int par1, int par2, const std::vector<std::string> &files) {
     if (files.size() >= par1) {
         extra_aud_file = files[par1 - 1];
         ins_time = par2;
+        mix_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/Converter/Slow/slow.txt";
     } else
         throw Exceptions("Too few program arguments: no second track");
 }

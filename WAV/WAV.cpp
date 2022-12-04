@@ -28,24 +28,37 @@ void WAV::read_wav() {
     }
     sample_size = wav_header.bitsPerSample / 8;
     samples_count = wav_chunk.subchunkSize * 8 / wav_header.bitsPerSample;
+    cnt_smpl_sec = wav_header.sampleRate;
 
-    data = new unsigned long[samples_count];
-    memset(data, 0, sizeof(unsigned long) * samples_count);
+    auto *data1 = new unsigned long[1];
+    // memset(data, 0, sizeof(unsigned long) * samples_count);
 
-    for (int i = 0; i < samples_count; i++)
-        fread(&data[i], sample_size, 1, fin);
-
+    FILE *data_file = fopen(data_file_name.c_str(), "wb");
+    for (int i = 0; i < samples_count; i++) {
+        fread(&data1, sample_size, 1, fin);
+        fwrite(&data1, sample_size, 1, data_file);
+    }
+    fclose(data_file);
     fclose(fin);
 }
 
-void WAV::record_wav(const std::string& file_out_name) {
+void WAV::record_wav(const std::string &file_out_name) {
     FILE *fout = fopen(file_out_name.c_str(), "wb");
     fwrite(&wav_header, sizeof(wav_header), 1, fout);
     fwrite(&wav_chunk, sizeof(wav_chunk), 1, fout);
 
-    for (int i = 0; i < samples_count; i++)
-        fwrite(&data[i], sample_size, 1, fout);
-
+    FILE *data_file = fopen(data_file_name.c_str(), "rb");
+    unsigned long *buffer;
+    buffer = new unsigned long[cnt_smpl_sec];
+    memset(buffer, 0, cnt_smpl_sec);
+    for (int i = 0; i < samples_count / cnt_smpl_sec +1; i++) {
+        for (int j = 0; j < cnt_smpl_sec; j++)
+            fread(&buffer[j], sample_size, 1, data_file);
+        for (int j = 0; j < cnt_smpl_sec; j++)
+            fwrite(&buffer[j], sample_size, 1, fout);
+    }
+    delete buffer;
+    fclose(data_file);
     fclose(fout);
 }
 

@@ -13,10 +13,11 @@ class Mixer : public Converter {
 private:
     std::string extra_aud_file;
     int ins_time;
+    std::string mix_file_name;
 public:
     explicit Mixer() = default;
 
-    explicit Mixer(int par1, int par2,const std::vector<std::string>& files);
+    explicit Mixer(int par1, int par2, const std::vector<std::string>& files);
 
     void get_description() override ;
 
