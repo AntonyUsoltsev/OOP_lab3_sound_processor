@@ -1,9 +1,8 @@
 #include <iostream>
+#include <ctime>
 #include "Prog_args/Prog_args.h"
-#include "WAV/WAV.h"
 #include "Sound_processor/Sound_processor.h"
 #include "Exceptions/Exceptions.h"
-#include <ctime>
 
 int main(int argc, char **argv) {
     clock_t clock = std::clock();
@@ -21,7 +20,8 @@ int main(int argc, char **argv) {
         WAV wav(prog_args.files[0],1);
         wav.read_wav();
 
-        Sound_processor sound_proc(wav, instructions, prog_args.files);
+        Sound_processor sound_proc(instructions, prog_args.files);
+        sound_proc.convert_audio(wav);
 
         wav.record_wav(prog_args.output);
 

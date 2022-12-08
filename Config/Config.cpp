@@ -15,17 +15,14 @@ std::vector<Action> Config::read_config() {
     int num_of_str = 0;
     while (std::getline(fin, line, '\n')) {
         num_of_str ++ ;
-        std::string num_bad_string = " (str " + std::to_string(num_of_str)+")";
+
         if (line[0] == '#')
             continue;
 
         Action act;
+        std::string num_bad_string = " (str " + std::to_string(num_of_str)+")";
 
         sscanf(line.c_str(), "%s", act.convert_type.c_str());
-
-        if (strcmp(act.convert_type.c_str(), "mute") && strcmp(act.convert_type.c_str(), "mix") &&
-            strcmp(act.convert_type.c_str(), "slow"))
-            throw Exceptions("Wrong type of conversion" + num_bad_string );
 
         if (strcmp(act.convert_type.c_str(), "mute") == 0 || strcmp(act.convert_type.c_str(), "slow") == 0) {
             if (sscanf(line.c_str(), "%s %d %d", act.convert_type.c_str(), &act.frst_arg, &act.sec_arg) != 3)
@@ -34,7 +31,7 @@ std::vector<Action> Config::read_config() {
                 throw Exceptions("Wrong time arguments" + num_bad_string);
         }
 
-        if (strcmp(act.convert_type.c_str(), "mix") == 0) {
+        else if (strcmp(act.convert_type.c_str(), "mix") == 0) {
             if (sscanf(line.c_str(), "%s $%d %d", act.convert_type.c_str(), &act.frst_arg, &act.sec_arg) != 3)
                 throw Exceptions("Too few args in config file or wrong symbols" + num_bad_string);
             if (act.frst_arg <= 1)
@@ -42,13 +39,15 @@ std::vector<Action> Config::read_config() {
             if (act.sec_arg < 0)
                 throw Exceptions("Wrong time arguments" + num_bad_string);
         }
+        else{
+            throw Exceptions("Wrong type of conversion" + num_bad_string );
+        }
 
         Action act2;
         act2.convert_type = act.convert_type.c_str();
         act2.frst_arg = act.frst_arg;
         act2.sec_arg = act.sec_arg;
         instructions.push_back(act2);
-        //instructions.push_back(act);
     }
     return instructions;
 }

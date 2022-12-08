@@ -29,14 +29,7 @@ void Slow::action(WAV &wav) {
 
     memset(buffer, 0, wav.cnt_smpl_sec * 2);
     fseek(data_file, time1 * wav.cnt_smpl_sec * wav.sample_size, SEEK_SET);
-//    for (unsigned long t = 0; t <= time1; t++) {
-//        for (int j = 0; j < wav.cnt_smpl_sec; j++) {
-//            fread(&buffer[j], wav.sample_size, 1, data_file);
-//        }
-//        for (int j = 0; j < wav.cnt_smpl_sec; j++) {
-//            fwrite(&buffer[j], wav.sample_size, 1, slow_file);
-//        }
-//    }
+
     for (unsigned long t = time1; t <= time2; t++) {
         int ind = 0;
         for (int j = 0; j < wav.cnt_smpl_sec; j++) {

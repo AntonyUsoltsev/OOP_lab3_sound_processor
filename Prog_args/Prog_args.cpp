@@ -1,8 +1,9 @@
 //
 // Created by Antony on 01.12.2022.
 //
-
 #include "Prog_args.h"
+
+#define WHITE FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED
 
 /* Include check key rightness, the presence of the necessary keys (config, output, files[0] == input)
  * and extension of arguments (config == .txt, output = .wav, files = .wav)
@@ -25,69 +26,61 @@ Prog_args::Prog_args(int argc, char **argv) {
         throw Exceptions(e.what());
     }
     if (vm.count("help")) {
-        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
-        std::cout << "\nCommand Line Info:\n";
-        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-        std::cout << desc << std::endl;
-        Manual::get_manual();
-        std::string confirm;
-        SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
-        std::cout << "\nTo continue press any key, to stop insert stop\n";
-        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-        std::cin>>confirm;
-        fflush(stdin);
-        if (!(strcmp(confirm.c_str(),"stop") && strcmp(confirm.c_str(),"STOP"))){
-            throw Exceptions("Program stopped");
-        }
-
+        call_help(desc);
     } else {
         HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED);
         std::cout << "\nTO GET MANUAL INSERT --help KEY IN PROGRAM ARGUMENTS\n";
-        SetConsoleTextAttribute(hStdOut, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-
-    }
-//    if (vm.count("config")) {
-//        std::cout << "config:"
-//                  << vm["config"].as<std::string>() << std::endl;
-//    }
-    if (!vm.count("config")) {
-        throw Exceptions("Missing config txt file in program arguments");
-    }
-//    if (vm.count("output")) {
-//        std::cout << "output:"
-//                  << vm["output"].as<std::string>() << std::endl;
-//    }
-    if (!vm.count("output")) {
-        throw Exceptions("Missing output wav file in program arguments");
-    }
-//    if (vm.count("files")) {
-//        for (int i = 0; i < files.size(); i++)
-//            std::cout << "file " << i + 1 << ":" << vm["files"].as<std::vector<std::string>>()[i] << std::endl;
-//    }
-    if (!vm.count("files")) {
-        throw Exceptions("Missing input wav file in program arguments");
+        SetConsoleTextAttribute(hStdOut, WHITE);
     }
 
-    unsigned long len = config.length();
-    std::string type = config.substr(len-3, 3);
-    if (strcmp(type.c_str(),"txt") != 0)
-        throw Exceptions("Invalid config file extension (need .txt)");
-
-    len = output.length();
-    type = output.substr(len-3, 3);
-    if (strcmp(type.c_str(),"wav") != 0)
-        throw Exceptions("Invalid output file extension (need .wav)");
-
-    for (const auto& str :files){
-        len = str.length();
-        type = str.substr(len-3, 3);
-        if (strcmp(type.c_str(),"wav") != 0)
-            throw Exceptions("Invalid input file(s) extension (need .wav)");
-    }
-
-
+    check_rightness();
 
 }
 
+void Prog_args::call_help(const po::options_description &desc) {
+
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
+    std::cout << "\nCommand Line Info:\n";
+    SetConsoleTextAttribute(hStdOut, WHITE);
+
+    std::cout << desc << std::endl;
+    Manual::get_manual();
+
+    std::string confirm;
+    SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
+    std::cout << "\nTo continue press any key, to stop insert stop\n";
+    SetConsoleTextAttribute(hStdOut, WHITE);
+    std::cin >> confirm;
+    fflush(stdin);
+
+    if (strcmp(confirm.c_str(), "stop") == 0 || strcmp(confirm.c_str(), "STOP") == 0)
+        throw Exceptions("Program stopped");
+}
+
+
+void Prog_args::check_rightness() {
+    if (!vm.count("config"))
+        throw Exceptions("Missing config txt file in program arguments");
+
+    if (!vm.count("output"))
+        throw Exceptions("Missing output wav file in program arguments");
+
+    if (!vm.count("files"))
+        throw Exceptions("Missing input wav file in program arguments");
+
+    check_extension(config, "config", ".txt");
+    check_extension(output, "output", ".wav");
+    for (const auto &str: files)
+        check_extension(str, "input", ".wav");
+}
+
+void Prog_args::check_extension(const std::string &str, const std::string &type, const std::string &extension) {
+    unsigned long len = str.length();
+    std::string ext = str.substr(len - 4, 4);
+    if (strcmp(ext.c_str(), extension.c_str()) != 0) {
+        std::string ex = "Invalid " + type + " file extension (need " + extension + ")";
+        throw Exceptions(ex);
+    }
+}
