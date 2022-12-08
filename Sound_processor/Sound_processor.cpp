@@ -14,14 +14,13 @@ Sound_processor::Sound_processor(const std::vector<Action> &instructions, const 
         conv_list.push_back(conv_fact.get(i.convert_type)(i.frst_arg, i.sec_arg, files));
 }
 
-void Sound_processor::convert_audio(WAV &wav){
+void Sound_processor::convert_audio(WAV &wav) {
     size_t con_count = conv_list.size();
     int cur = 1;
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
     for (auto cl: conv_list) {
         std::cout << "Converting " << cur * 100 / con_count << "%\n";
-        //std::cout << "=";
         cl->action(wav);
         cur++;
     }
@@ -31,8 +30,6 @@ void Sound_processor::convert_audio(WAV &wav){
 }
 
 void Sound_processor::make_null() {
-
-    for (auto &i: conv_list)
-        delete i;
-
+    for (auto &cl: conv_list)
+        delete cl;
 }

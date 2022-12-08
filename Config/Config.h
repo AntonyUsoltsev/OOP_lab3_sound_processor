@@ -22,6 +22,7 @@ class Config {
 private:
     std::vector<Action> instructions;
     std::string file_name;
+
 public:
 
     explicit Config(std::string f_name) : file_name(std::move(f_name)) {}

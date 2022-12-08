@@ -23,7 +23,7 @@ Prog_args::Prog_args(int argc, char **argv) {
         po::notify(vm);
     }
     catch (po::error &e) {
-        throw Exceptions(e.what());
+        throw Exceptions(e.what(), BAD_PROG_ARGS_KEY);
     }
     if (vm.count("help")) {
         call_help(desc);
@@ -56,19 +56,19 @@ void Prog_args::call_help(const po::options_description &desc) {
     fflush(stdin);
 
     if (strcmp(confirm.c_str(), "stop") == 0 || strcmp(confirm.c_str(), "STOP") == 0)
-        throw Exceptions("Program stopped");
+        throw Exceptions("Program stopped", PROGRAM_STOPPED);
 }
 
 
 void Prog_args::check_rightness() {
     if (!vm.count("config"))
-        throw Exceptions("Missing config txt file in program arguments");
+        throw Exceptions("Missing config txt file in program arguments", MISSING_KEY);
 
     if (!vm.count("output"))
-        throw Exceptions("Missing output wav file in program arguments");
+        throw Exceptions("Missing output wav file in program arguments", MISSING_KEY);
 
     if (!vm.count("files"))
-        throw Exceptions("Missing input wav file in program arguments");
+        throw Exceptions("Missing input wav file in program arguments", MISSING_KEY);
 
     check_extension(config, "config", ".txt");
     check_extension(output, "output", ".wav");
@@ -81,6 +81,6 @@ void Prog_args::check_extension(const std::string &str, const std::string &type,
     std::string ext = str.substr(len - 4, 4);
     if (strcmp(ext.c_str(), extension.c_str()) != 0) {
         std::string ex = "Invalid " + type + " file extension (need " + extension + ")";
-        throw Exceptions(ex);
+        throw Exceptions(ex, BAD_PROG_ARGS_EXTENSION);
     }
 }

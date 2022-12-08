@@ -4,7 +4,7 @@
 
 #include "WAV.h"
 
-// Include read WAV-file, check some header params and record converted audio to output WAV-file
+// Include: read WAV-file (using self-created data file), check some header params and record converted audio to output WAV-file
 
 WAV::WAV(std::string f_name, int priority) : file_name(std::move(f_name)) {
     if (priority == 1)
@@ -15,30 +15,36 @@ WAV::WAV(std::string f_name, int priority) : file_name(std::move(f_name)) {
 
 void WAV::check_rightness() const {
     if (wav_header.subchunk1Size != 16)
-        throw Exceptions("Audio format is incorrect");
+        throw Exceptions("Audio format is incorrect", BAD_FILE_PARAMS);
     if (wav_header.numChannels != 1)
-        throw Exceptions("Audio isn't mono");
+        throw Exceptions("Audio isn't mono", BAD_FILE_PARAMS);
     if (wav_header.sampleRate != 44100)
-        throw Exceptions("Wrong sample rate");
+        throw Exceptions("Wrong sample rate", BAD_FILE_PARAMS);
 }
 
 void WAV::read_wav() {
-    FILE *fin = fopen(file_name.c_str(), "rb");
+    FILE *fin;
+    if ((fin = fopen(file_name.c_str(), "rb")) == nullptr)
+        throw Exceptions("WAV file didn't open", FILE_NOT_OPEN);
+
     fread(&wav_header, sizeof(wav_header), 1, fin);
-    fseek(fin, static_cast<long>(wav_header.subchunk1Size - 16), SEEK_CUR); //skip wExtraFormatBytes & extra format bytes
+    fseek(fin, static_cast<long>(wav_header.subchunk1Size - 16), SEEK_CUR); // skip wExtraFormatBytes & extra format bytes
     check_rightness();
 
-    while (true) {                                                                //find data chunk
+    while (true) {                                                                // find data chunk
         fread(&wav_chunk, sizeof(wav_chunk), 1, fin);
-        if (*(unsigned long *) &wav_chunk.subchunkId == 0x61746164)               //data
+        if (*(unsigned long *) &wav_chunk.subchunkId == 0x61746164)               // data
             break;
-        fseek(fin, static_cast<long>(wav_chunk.subchunkSize), SEEK_CUR);    //skip chunk data bytes
+        fseek(fin, static_cast<long>(wav_chunk.subchunkSize), SEEK_CUR);    // skip LIST chunk bytes
     }
     sample_size = wav_header.bitsPerSample / 8;
     samples_count = wav_chunk.subchunkSize * 8 / wav_header.bitsPerSample;
     cnt_smpl_sec = wav_header.sampleRate;
 
-    FILE *data_file = fopen(data_file_name.c_str(), "wb");
+    FILE *data_file;
+    if ((data_file = fopen(data_file_name.c_str(), "wb")) == nullptr)
+        throw Exceptions("Data file didn't open", FILE_NOT_OPEN);
+
     unsigned long *buffer;
     buffer = new unsigned long[cnt_smpl_sec];
     memset(buffer, 0, cnt_smpl_sec);
@@ -53,14 +59,21 @@ void WAV::read_wav() {
 }
 
 void WAV::record_wav(const std::string &file_out_name) {
-    FILE *fout = fopen(file_out_name.c_str(), "wb");
+    FILE *fout;
+    if ((fout = fopen(file_out_name.c_str(), "wb")) == nullptr)
+        throw Exceptions("Output file didn't open", FILE_NOT_OPEN);
+
     fwrite(&wav_header, sizeof(wav_header), 1, fout);
     fwrite(&wav_chunk, sizeof(wav_chunk), 1, fout);
 
-    FILE *data_file = fopen(data_file_name.c_str(), "rb");
+    FILE *data_file;
+    if ((data_file = fopen(data_file_name.c_str(), "rb")) == nullptr)
+        throw Exceptions("Data file didn't open", FILE_NOT_OPEN);
+
     unsigned long *buffer;
     buffer = new unsigned long[cnt_smpl_sec];
     memset(buffer, 0, cnt_smpl_sec);
+
     for (int i = 0; i < samples_count / cnt_smpl_sec + 1; i++) {
         for (int j = 0; j < cnt_smpl_sec; j++)
             fread(&buffer[j], sample_size, 1, data_file);

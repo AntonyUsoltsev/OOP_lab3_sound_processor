@@ -53,6 +53,8 @@ public:
 
     void record_wav(const std::string &file_out_name);
 
+    ~WAV() = default;
+
 };
 
 #endif //LAB3_SOUND_PROCESSOR_WAV_H

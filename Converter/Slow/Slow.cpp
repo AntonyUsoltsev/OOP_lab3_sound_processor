@@ -20,15 +20,20 @@ void Slow::get_description() {
 
 void Slow::action(WAV &wav) {
     if (time2 * wav.cnt_smpl_sec > wav.samples_count)
-        throw Exceptions("Invalid end time in slow converter");
+        throw Exceptions("Invalid end time in slow converter", BAD_TIME);
 
-    FILE *data_file = fopen(wav.data_file_name.c_str(), "rb");
-    FILE *slow_file = fopen(slow_file_name.c_str(), "wb");
+    FILE *data_file, *slow_file;
+    if ((data_file = fopen(wav.data_file_name.c_str(), "rb")) == nullptr)
+        throw Exceptions("Data file didn't open", FILE_NOT_OPEN);
+
+    if ((slow_file = fopen(slow_file_name.c_str(), "wb")) == nullptr)
+        throw Exceptions("Slow file didn't open", FILE_NOT_OPEN);
+
     unsigned long *buffer;
     buffer = new unsigned long[wav.cnt_smpl_sec * 2];
 
     memset(buffer, 0, wav.cnt_smpl_sec * 2);
-    fseek(data_file, time1 * wav.cnt_smpl_sec * wav.sample_size, SEEK_SET);
+    fseek(data_file, static_cast<long>(time1 * wav.cnt_smpl_sec * wav.sample_size), SEEK_SET);
 
     for (unsigned long t = time1; t <= time2; t++) {
         int ind = 0;
@@ -54,12 +59,15 @@ void Slow::action(WAV &wav) {
     fclose(data_file);
     fclose(slow_file);
 
-    data_file = fopen(wav.data_file_name.c_str(), "rb+");
-    slow_file = fopen(slow_file_name.c_str(), "rb");
-    buffer = new unsigned long[wav.cnt_smpl_sec ];
-    memset(buffer, 0, wav.cnt_smpl_sec );
-    fseek(data_file, time1 * wav.cnt_smpl_sec * wav.sample_size, SEEK_SET);
-    for (int i = time1; i < wav.samples_count /wav. cnt_smpl_sec +1; i++) {
+    if ((data_file = fopen(wav.data_file_name.c_str(), "rb+")) == nullptr)
+        throw Exceptions("Data file didn't open", FILE_NOT_OPEN);
+    if ((slow_file = fopen(slow_file_name.c_str(), "rb")) == nullptr)
+        throw Exceptions("Slow file didn't open", FILE_NOT_OPEN);
+
+    buffer = new unsigned long[wav.cnt_smpl_sec];
+    memset(buffer, 0, wav.cnt_smpl_sec);
+    fseek(data_file, static_cast<long>(time1 * wav.cnt_smpl_sec * wav.sample_size), SEEK_SET);
+    for (int i = time1; i < wav.samples_count / wav.cnt_smpl_sec + 1; i++) {
         for (int j = 0; j < wav.cnt_smpl_sec; j++)
             fread(&buffer[j], wav.sample_size, 1, slow_file);
         for (int j = 0; j < wav.cnt_smpl_sec; j++)

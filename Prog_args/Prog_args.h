@@ -32,7 +32,9 @@ public:
 
     void check_rightness();
 
-    static void call_help(const po::options_description& desc);
+    static void call_help(const po::options_description &desc);
+
+    ~Prog_args() = default;
 };
 
 #endif //LAB3_SOUND_PROCESSOR_PROG_ARGS_H

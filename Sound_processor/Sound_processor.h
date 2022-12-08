@@ -13,17 +13,17 @@
 #include "..//Converter/Slow/Slow.h"
 #include "..//Config/Config.h"
 
-//TODO: time2>wav.len
-
 class Sound_processor {
 private:
     std::vector<Converter *> conv_list;
 public:
-    Sound_processor(const std::vector<Action>& instructions, const std::vector<std::string>& files);
+    Sound_processor(const std::vector<Action> &instructions, const std::vector<std::string> &files);
 
     void convert_audio(WAV &wav);
 
     void make_null();
+
+    ~Sound_processor() = default;
 
 };
 

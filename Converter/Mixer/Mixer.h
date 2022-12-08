@@ -13,7 +13,6 @@ class Mixer : public Converter {
 private:
     std::string extra_aud_file;
     int ins_time;
-    //std::string mix_file_name;
 public:
     explicit Mixer() = default;
 
@@ -22,6 +21,8 @@ public:
     void get_description() override ;
 
     void action(WAV &wav) override;
+
+    ~Mixer() override = default;
 };
 
 #endif //LAB3_SOUND_PROCESSOR_MIXER_H

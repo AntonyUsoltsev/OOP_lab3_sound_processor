@@ -9,7 +9,7 @@
 std::vector<Action> Config::read_config() {
     std::ifstream fin(file_name);
     if (!fin.is_open())
-        throw Exceptions("Config file didn't open");
+        throw Exceptions("Config file didn't open",FILE_NOT_OPEN);
 
     std::string line;
     int num_of_str = 0;
@@ -26,21 +26,21 @@ std::vector<Action> Config::read_config() {
 
         if (strcmp(act.convert_type.c_str(), "mute") == 0 || strcmp(act.convert_type.c_str(), "slow") == 0) {
             if (sscanf(line.c_str(), "%s %d %d", act.convert_type.c_str(), &act.frst_arg, &act.sec_arg) != 3)
-                throw Exceptions("Too few args in config file or wrong symbols" + num_bad_string);
+                throw Exceptions("Too few args in config file or wrong symbols" + num_bad_string,BAD_CONFIG_CONV_ARGS);
             if (act.frst_arg >= act.sec_arg || act.frst_arg < 0 || act.sec_arg < 0)
-                throw Exceptions("Wrong time arguments" + num_bad_string);
+                throw Exceptions("Wrong time arguments" + num_bad_string,BAD_TIME);
         }
 
         else if (strcmp(act.convert_type.c_str(), "mix") == 0) {
             if (sscanf(line.c_str(), "%s $%d %d", act.convert_type.c_str(), &act.frst_arg, &act.sec_arg) != 3)
-                throw Exceptions("Too few args in config file or wrong symbols" + num_bad_string);
+                throw Exceptions("Too few args in config file or wrong symbols" + num_bad_string,BAD_CONFIG_CONV_ARGS);
             if (act.frst_arg <= 1)
-                throw Exceptions("Wrong address of extra file for mix" + num_bad_string);
+                throw Exceptions("Wrong address of extra file for mix" + num_bad_string,BAD_CONFIG_CONV_ARGS);
             if (act.sec_arg < 0)
-                throw Exceptions("Wrong time arguments" + num_bad_string);
+                throw Exceptions("Wrong time arguments" + num_bad_string,BAD_TIME);
         }
         else{
-            throw Exceptions("Wrong type of conversion" + num_bad_string );
+            throw Exceptions("Wrong type of conversion" + num_bad_string,BAD_CONFIG_CONVERTER);
         }
 
         Action act2;

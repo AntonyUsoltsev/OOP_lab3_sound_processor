@@ -17,14 +17,15 @@ private:
 public:
     explicit Slow() = default;
 
-    explicit Slow(int par1, int par2,const std::vector<std::string>& files) : time1(par1), time2(par2) {
-       slow_file_name = "D:/Antony/Programing_C++/OOP/lab3_sound_processor/Converter/Slow/slow.txt";
+    explicit Slow(int par1, int par2, const std::vector<std::string> &files) : time1(par1), time2(par2) {
+        slow_file_name = "..//Converter/Slow/slow.txt";
     }
 
     void get_description() override;
 
     void action(WAV &wav) override;
-};
 
+    ~Slow() override = default;
+};
 
 #endif //LAB3_SOUND_PROCESSOR_SLOW_H

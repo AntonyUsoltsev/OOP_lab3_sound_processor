@@ -20,25 +20,24 @@ void Muter::get_description() {
 
 void Muter::action(WAV &wav) {
     if (time2 * wav.cnt_smpl_sec > wav.samples_count)
-        throw Exceptions("Invalid end time in mute converter");
+        throw Exceptions("Invalid end time in mute converter", BAD_TIME);
 
-    FILE *data_file = fopen(wav.data_file_name.c_str(), "rb+");
-    unsigned long *buffer;
-    buffer = new unsigned long[wav.cnt_smpl_sec];
+    FILE *data_file;
+    if ((data_file = fopen(wav.data_file_name.c_str(), "rb+")) == nullptr)
+        throw Exceptions("Data file didn't open", FILE_NOT_OPEN);
 
+    auto *buffer = new unsigned long[wav.cnt_smpl_sec];
     memset(buffer, 0, wav.cnt_smpl_sec);
+
     for (unsigned long i = time1; i <= time2; i++) {
-        fseek(data_file, i * wav.cnt_smpl_sec * wav.sample_size, SEEK_SET);
-        for (int j = 0; j < wav.cnt_smpl_sec; j++) {
+        fseek(data_file, static_cast<long>(i * wav.cnt_smpl_sec * wav.sample_size), SEEK_SET);
+        for (int j = 0; j < wav.cnt_smpl_sec; j++)
             fread(&buffer[j], wav.sample_size, 1, data_file);
-        }
-        for (int j = 0; j < wav.cnt_smpl_sec; j++) {
+        for (int j = 0; j < wav.cnt_smpl_sec; j++)
             buffer[j] = 0;
-        }
-        fseek(data_file, i * wav.cnt_smpl_sec * wav.sample_size, SEEK_SET);
-        for (int j = 0; j < wav.cnt_smpl_sec; j++) {
+        fseek(data_file, static_cast<long>(i * wav.cnt_smpl_sec * wav.sample_size), SEEK_SET);
+        for (int j = 0; j < wav.cnt_smpl_sec; j++)
             fwrite(&buffer[j], wav.sample_size, 1, data_file);
-        }
     }
     fclose(data_file);
 }
